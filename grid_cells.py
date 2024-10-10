@@ -1,12 +1,15 @@
-class GridCells:
-    REQUIRED = {"depth", "value", "wind", "waves"}
+import random
 
+class GridCells:
+    #REQUIRED = {"depth", "wind", "waves"}
+    REQUIRED = {"navigable"}
     def __init__(self, **kwds):
         self.dict = kwds
         if "name" in kwds:
             self.name = kwds["name"]
+
         for key in self.REQUIRED:
-            if key not in self.dict:
+            if key not in kwds:
                 raise ValueError(f"Missing required key: {key}")
 
     def set(self, key, value):
@@ -23,7 +26,8 @@ class GridCells:
 
 
 def default():
-    return GridCells(depth=-1, value=-1, wind=-1, waves=-1, default=True)
+    return GridCells(navigable=random.choice([True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, False]), default=True)
+
 
 
 

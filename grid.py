@@ -5,7 +5,7 @@ class Grid:
     def __init__(self, rows=20, cols=20):
         self.rows = rows
         self.cols = cols
-        self.grid = [[grid_cells.default()] * cols for _ in range(rows)]
+        self.grid = [[grid_cells.default() for _ in range(cols)] for _ in range(rows)]
 
     @classmethod
     def from_json(cls, data):
@@ -14,6 +14,12 @@ class Grid:
         self.cols = data["cols"]
         self.grid = [[grid_cells.GridCells(**y) for y in x] for x in data["grid"]]
         return self
+
+    @classmethod
+    def load(cls, filename):
+        with open(filename, 'r') as f:
+            return cls.from_json(json.load(f))
+
 
     def set_cell(self, xy, value):
         x, y = xy
@@ -34,26 +40,22 @@ class Grid:
 
     __repr__ = __str__
 
-    def save(self):
+    def save(self, filename):
+        with open(filename, "w") as f:
+            json.dump(self.save_json(), f, indent=4)
+
+    def save_json(self):
         return {
             "rows": self.rows,
             "cols": self.cols,
             "grid": [[y.save() for y in x] for x in self.grid]
         }
 
-def save(filename, grid):
-    with open(filename, "w") as f:
-        json.dump(grid.save(), f, indent=4)
-
-def load(filename):
-    with open(filename, 'r') as f:
-        return Grid.from_json(json.load(f))
-
 
 
 #grid[0, 0].set("navigable", True)
 
-#save("grid.json", grid)
-grid = load("grid.json")
-print(grid[0, 0].get("depth"))
+#grid.save("grid.json")
+#grid = Grid.load("grid.json")
+#print(grid[0, 0].get("navigable"))
 

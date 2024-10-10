@@ -1,25 +1,36 @@
 import pygame
 import sys
 from grid import Grid
+
+#initialize classes
 pygame.init()
-grid = Grid(200, 200)
+grid = Grid(20, 20)
 grid.save("grid.json")
 grid_map = Grid.load("grid.json")
 
-print(grid_map[0, 0].get("navigable"))
+
 width, height = 400, 400
-rows, cols = 20, 20
+rows, cols = grid_map.rows, grid_map.cols
 cell_size = width // cols
 screen = pygame.display.set_mode((width, height))
-pygame.display.set_caption("20x20 Grid")
+pygame.display.set_caption("FLL Double Minus innovation project")
 WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
+BLUE = NAVIGABLE = (14, 135, 204)
 
+BLACK = NON_NAVIGABLE = (0, 0, 0)
 def draw_grid():
     for x in range(0, width, cell_size):
         pygame.draw.line(screen, BLACK, (x, 0), (x, height))
     for y in range(0, height, cell_size):
         pygame.draw.line(screen, BLACK, (0, y), (width, y))
+
+    for y in range(cols):
+        for x in range(rows):
+            if grid_map[x, y].get("navigable"):
+                pygame.draw.rect(screen, NAVIGABLE, (x*cell_size, y*cell_size, cell_size, cell_size))
+            else:
+                pygame.draw.rect(screen, NON_NAVIGABLE, (x*cell_size, y*cell_size, cell_size, cell_size))
+
 
 while True:
     for event in pygame.event.get():
