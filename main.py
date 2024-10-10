@@ -2,6 +2,11 @@ import pygame
 import sys
 from grid import Grid
 pygame.init()
+grid = Grid(200, 200)
+grid.save("grid.json")
+grid_map = Grid.load("grid.json")
+
+print(grid_map[0, 0].get("navigable"))
 width, height = 400, 400
 rows, cols = 20, 20
 cell_size = width // cols

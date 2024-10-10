@@ -50,8 +50,8 @@ def load(filename):
         return Grid.from_json(json.load(f))
 
 
-#grid = Grid(5, 5)
-#grid[0, 0].set("depth", 10)
+
+#grid[0, 0].set("navigable", True)
 
 #save("grid.json", grid)
 grid = load("grid.json")
