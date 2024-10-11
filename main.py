@@ -4,7 +4,7 @@ from grid import Grid
 
 #initialize classes
 pygame.init()
-grid = Grid(20, 20)
+grid = Grid(40, 40)
 grid.save("grid.json")
 grid_map = Grid.load("grid.json")
 

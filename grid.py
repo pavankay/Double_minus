@@ -1,18 +1,19 @@
-import grid_cells
+from grid_cells import GridCells
 import json
 
 class Grid:
     def __init__(self, rows=20, cols=20):
         self.rows = rows
         self.cols = cols
-        self.grid = [[grid_cells.default() for _ in range(cols)] for _ in range(rows)]
+        landmass_map = GridCells.generate_landmass_map(self.rows, self.cols, land_probability=0.425)
+        self.grid = [[GridCells.default(i, j, landmass_map) for j in range(self.cols)] for i in range(self.rows)]
 
     @classmethod
     def from_json(cls, data):
         self = cls()
         self.rows = data["rows"]
         self.cols = data["cols"]
-        self.grid = [[grid_cells.GridCells(**y) for y in x] for x in data["grid"]]
+        self.grid = [[GridCells(**y) for y in x] for x in data["grid"]]
         return self
 
     @classmethod
@@ -52,10 +53,8 @@ class Grid:
         }
 
 
-
 #grid[0, 0].set("navigable", True)
 
 #grid.save("grid.json")
 #grid = Grid.load("grid.json")
 #print(grid[0, 0].get("navigable"))
-
