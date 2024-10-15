@@ -12,6 +12,10 @@ class GridCells:
         for key in self.REQUIRED:
             if key not in kwds:
                 raise ValueError(f"Missing required key: {key}")
+        self.navigable = dict["navigable"]
+
+    def __bool__(self):
+        return self.dict["navigable"]
 
     def set(self, key, value):
         self.dict[key] = value
@@ -53,12 +57,11 @@ class GridCells:
                     else:
                         new_grid[i][j] = land_neighbors >= 5  # Become land if many land neighbors
             grid = new_grid
-
         return grid
 
     @classmethod
     def default(cls, row, col, landmass_map):
-        return cls(navigable=not landmass_map[row][col], default=True)
+        return cls(navigable=not landmass_map[col][row], default=True)
 
 # Usage example (to be placed in the Grid class or where the grid is initialized):
 # landmass_map = GridCells.generate_landmass_map(40, 40)
