@@ -5,7 +5,6 @@ import sys
 #initialize classes
 pygame.init()
 
-
 if constants.REPLACE_DATA:
     grid = Grid()
     grid.save(constants.DATAPATH)
