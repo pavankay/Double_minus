@@ -1,4 +1,5 @@
 import random
+import constants
 
 class GridCells:
     REQUIRED = {"navigable"}
@@ -25,9 +26,9 @@ class GridCells:
         return self.dict
 
     @staticmethod
-    def generate_landmass_map(rows, cols, land_probability=0.3, smoothing_iterations=5):
+    def generate_landmass_map(rows, cols):
         # Initialize the grid randomly
-        grid = [[random.random() < land_probability for _ in range(cols)] for _ in range(rows)]
+        grid = [[random.random() < constants.LAND_PROBABILITY for _ in range(cols)] for _ in range(rows)]
 
         # Helper function to count land neighbors
         def count_land_neighbors(x, y):
@@ -42,7 +43,7 @@ class GridCells:
             return count
 
         # Smooth the map to create more natural-looking landmasses
-        for _ in range(smoothing_iterations):
+        for _ in range(constants.SMOOTHING_ITERATIONS):
             new_grid = [[False for _ in range(cols)] for _ in range(rows)]
             for i in range(rows):
                 for j in range(cols):

@@ -1,11 +1,12 @@
-from grid_cells import GridCells
+from grid.grid_cells import GridCells
 import json
+import constants
 
 class Grid:
-    def __init__(self, rows=20, cols=20):
-        self.rows = rows
-        self.cols = cols
-        landmass_map = GridCells.generate_landmass_map(self.rows, self.cols, land_probability=0.425)
+    def __init__(self):
+        self.rows = constants.ROWS
+        self.cols = constants.COLS
+        landmass_map = GridCells.generate_landmass_map(self.rows, self.cols)
         self.grid = [[GridCells.default(i, j, landmass_map) for j in range(self.cols)] for i in range(self.rows)]
 
     @classmethod
@@ -55,6 +56,6 @@ class Grid:
 
 #grid[0, 0].set("navigable", True)
 
-#grid.save("grid.json")
-#grid = Grid.load("grid.json")
+#grid.save("./data/grid.json")
+#grid = Grid.load("./data/grid.json")
 #print(grid[0, 0].get("navigable"))

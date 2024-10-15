@@ -1,15 +1,20 @@
 import pygame
+from grid.grid import Grid
+import constants
 import sys
-from grid import Grid
-
 #initialize classes
 pygame.init()
-grid = Grid(40, 40)
-grid.save("grid.json")
-grid_map = Grid.load("grid.json")
 
 
-width, height = 400, 400
+if constants.REPLACE_DATA:
+    grid = Grid()
+    grid.save(constants.DATAPATH)
+
+
+grid_map = Grid.load(constants.DATAPATH)
+
+
+width, height =  constants.WIDTH,  constants.HEIGHT
 rows, cols = grid_map.rows, grid_map.cols
 cell_size = width // cols
 screen = pygame.display.set_mode((width, height))
