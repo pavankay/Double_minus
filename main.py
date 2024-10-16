@@ -1,5 +1,6 @@
 import pygame
 from grid.grid import Grid
+from nav.boat import Boat
 import constants
 import sys
 #initialize classes
@@ -14,6 +15,9 @@ else:
 
 
 grid_map = Grid.load(constants.DATAPATH)
+boat = Boat(grid_map)
+print(boat.get_neighbors())
+
 
 
 width, height =  constants.WIDTH,  constants.HEIGHT
@@ -27,6 +31,12 @@ BOAT = (128,0,128)
 
 BLACK = NON_NAVIGABLE = (0, 0, 0)
 
+START = (255, 165, 0)
+END = (0, 255, 0)
+
+clock = pygame.time.Clock()
+target = constants.BOAT_TARGET_POS
+
 def draw_grid():
     for y in range(cols):
         for x in range(rows):
@@ -38,17 +48,54 @@ def draw_grid():
         pygame.draw.line(screen, BLACK, (x, 0), (x, height))
     for y in range(0, height, cell_size):
         pygame.draw.line(screen, BLACK, (0, y), (width, y))
-    boat_position = constants.BOAT_STARTING_POS
-    boat_x = boat_position[0] * cell_size
-    boat_y = boat_position[1] * cell_size
+
+
+
+    start_x = constants.BOAT_STARTING_POS[0] * cell_size
+    start_y = constants.BOAT_STARTING_POS[1] * cell_size
+    pygame.draw.rect(screen, START, (start_x, start_y, cell_size, cell_size))
+
+    end_x = constants.BOAT_TARGET_POS[0] * cell_size
+    end_y = constants.BOAT_TARGET_POS[1] * cell_size
+    pygame.draw.rect(screen, END, (end_x, end_y, cell_size, cell_size))
+
+    boat_x = boat.x * cell_size
+    boat_y = boat.y * cell_size
     pygame.draw.rect(screen, BOAT, (boat_x, boat_y, cell_size, cell_size))
 
 
 while True:
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_UP]:
+        print("UP")
+        boat.move(0, -1)
+    elif keys[pygame.K_DOWN]:
+        print("DOWN")
+        boat.move(0, 1)
+    elif keys[pygame.K_LEFT]:
+        print("LEFT")
+        boat.move(-1, 0)
+    elif keys[pygame.K_RIGHT]:
+        print("RIGHT")
+        boat.move(1, 0)
+
+    clock.tick(30)
+
     screen.fill(WHITE)
     draw_grid()
+
+    boat_x = (boat.x * cell_size) + cell_size // 2
+    boat_y = (boat.y * cell_size) + cell_size // 2
+
+    target_x = (target[0] * cell_size) + cell_size // 2
+    target_y = (target[1] * cell_size) + cell_size // 2
+
+    pygame.draw.line(screen, (255, 0, 0), (boat_x, boat_y), (target_x, target_y), 2)
+
     pygame.display.flip()

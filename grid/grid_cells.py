@@ -20,6 +20,9 @@ class GridCells:
     def set(self, key, value):
         self.dict[key] = value
 
+    def get_navigable(self):
+        pass
+
     def get(self, key):
         return self.dict[key]
 
