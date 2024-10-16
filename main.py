@@ -64,6 +64,43 @@ def draw_grid():
     pygame.draw.rect(screen, BOAT, (boat_x, boat_y, cell_size, cell_size))
 
 
+import math
+
+pygame.font.init()
+font = pygame.font.Font(None, 36)
+
+
+def draw_gps_marker():
+    dx = target_x - boat_x
+    dy = target_y - boat_y
+
+    distance = math.sqrt(dx ** 2 + dy ** 2)
+    if distance == 0:
+        return
+    angle = math.degrees(math.atan2(dy, dx))
+
+    marker_distance = min(100, distance)
+    gps_x = boat_x + dx / distance * marker_distance
+    gps_y = boat_y + dy / distance * marker_distance
+
+    # Calculate the perpendicular offset
+    perp_offset = -20  # Distance to move the text slightly above the line
+    perp_dx = -dy / distance * perp_offset
+    perp_dy = dx / distance * perp_offset
+
+    # Position the text slightly above the line
+    text_x = gps_x + perp_dx
+    text_y = gps_y + perp_dy
+
+    text_surface = font.render("GPS marker", True, (0, 255, 0))
+    rotated_text = pygame.transform.rotate(text_surface, -angle)
+
+    text_rect = rotated_text.get_rect(center=(int(text_x), int(text_y)))
+    screen.blit(rotated_text, text_rect)
+
+    pygame.draw.line(screen, (0, 255, 0), (boat_x, boat_y), (target_x, target_y), 2)
+
+
 while True:
 
     for event in pygame.event.get():
@@ -73,16 +110,12 @@ while True:
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_UP]:
-        print("UP")
         boat.move(0, -1)
     elif keys[pygame.K_DOWN]:
-        print("DOWN")
         boat.move(0, 1)
     elif keys[pygame.K_LEFT]:
-        print("LEFT")
         boat.move(-1, 0)
     elif keys[pygame.K_RIGHT]:
-        print("RIGHT")
         boat.move(1, 0)
 
     clock.tick(30)
@@ -97,5 +130,7 @@ while True:
     target_y = (target[1] * cell_size) + cell_size // 2
 
     pygame.draw.line(screen, (255, 0, 0), (boat_x, boat_y), (target_x, target_y), 2)
+
+    draw_gps_marker()
 
     pygame.display.flip()
