@@ -92,7 +92,7 @@ def draw_gps_marker():
     text_x = gps_x + perp_dx
     text_y = gps_y + perp_dy
 
-    text_surface = font.render("GPS marker", True, (0, 255, 0))
+    text_surface = font.render("GPS Target", True, (0, 255, 0))
     rotated_text = pygame.transform.rotate(text_surface, -angle)
 
     text_rect = rotated_text.get_rect(center=(int(text_x), int(text_y)))
