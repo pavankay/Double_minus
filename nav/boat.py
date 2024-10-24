@@ -16,15 +16,16 @@ class Boat:
                     continue
                 nx, ny = self.x + dx, self.y + dy
                 #if 0 <= nx < constants.ROWS and 0 <= ny < constants.COLS and self.grid[nx][ny]:
-                if 0 <= nx <= constants.ROWS and 0 <= ny < constants.COLS:
-
+                if 0 <= nx < constants.ROWS and 0 <= ny < constants.COLS:
                     if self.grid[nx, ny].get("navigable"):
-                        print(nx, ny)
-                        print(self.grid[nx, ny].get("navigable"))
+                        #print(nx, ny)
+                        #print(self.grid[nx, ny].get("navigable"))
                         available_moves.add((dx, dy))
                     else:
-                        print(nx, ny)
-                        print(self.grid[nx, ny].get("navigable"))
+                        # print(nx, ny)
+                        # print(self.grid[nx, ny].get("navigable"))
+                        pass
+
         return available_moves
 
 

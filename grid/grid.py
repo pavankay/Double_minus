@@ -35,7 +35,7 @@ class Grid:
         return None
 
     def is_navigable(self, x, y):
-        return self.grid[y][x].navigable
+        return self.grid[y][x].dict["navigable"]
 
     __setitem__ = set_cell
     __getitem__ = get_cell

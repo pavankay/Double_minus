@@ -5,15 +5,16 @@ os.chdir(r"C:\repos\BIG projects\Double_Minus\Double_minus")
 LAND_PROBABILITY = 0.425
 SMOOTHING_ITERATIONS = 7
 # Grid
-ROWS = 60
-COLS = 60
+ROWS = 150
+COLS = 150
 # Pygame
-WIDTH = 1200
-HEIGHT = 1200
+WIDTH = 1050
+HEIGHT = 1050
 DATAPATH = "./data/grid.json"
 # Boat
 BOAT_STARTING_POS = 0, 0
-BOAT_TARGET_POS = 59, 59
+BOAT_TARGET_POS = (ROWS - 1, COLS - 1)
 # Other
 REPLACE_DATA = True
 PYGAME_TITLE = "FLL Double Minus innovation project"
+
