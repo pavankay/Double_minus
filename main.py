@@ -19,6 +19,9 @@ else:
 grid_map = Grid.load(constants.DATAPATH)
 boat = Boat(grid_map)
 
+if constants.RANDOMIZE_TARGET_POS:
+    constants.BOAT_TARGET_POS = grid_map.find_random_location()
+
 # Initialize the greedy navigator
 navigator = GreedyNavigate(boat)
 
@@ -71,7 +74,7 @@ while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
-            sys.exit()
+            exit()
 
     # Navigate the boat using the greedy navigator
     navigator.navigate()

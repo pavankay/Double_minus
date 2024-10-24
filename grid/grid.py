@@ -1,6 +1,8 @@
 from grid.grid_cells import GridCells
 import json
 import constants
+import random
+
 
 class Grid:
     def __init__(self):
@@ -8,6 +10,29 @@ class Grid:
         self.cols = constants.COLS
         landmass_map = GridCells.generate_landmass_map(self.rows, self.cols)
         self.grid = [[GridCells.default(i, j, landmass_map) for j in range(self.cols)] for i in range(self.rows)]
+        self.randomize_target = constants.RANDOMIZE_TARGET_POS
+
+
+    def check_for_water(self, x, y):
+        neighbors = [(x, y-1), (x, y+1), (x-1, y), (x+1, y), (x, y)]
+
+        for neighbor in neighbors:
+            if not (0 <= neighbor[0] < self.rows and 0 <= neighbor[1] < self.cols):
+                return False
+
+            if not self.is_navigable(*neighbor):
+                return False
+
+        return True
+
+    def find_random_location(self):
+        x, y = -1, -1
+
+        while not self.check_for_water(x, y):
+            x = random.randint(0, self.rows - 1)
+            y = random.randint(0, self.cols - 1)
+
+        return x, y
 
     @classmethod
     def from_json(cls, data):
@@ -55,10 +80,3 @@ class Grid:
             "cols": self.cols,
             "grid": [[y.save() for y in x] for x in self.grid]
         }
-
-
-#grid[0, 0].set("navigable", True)
-
-#grid.save("./data/grid.json")
-#grid = Grid.load("./data/grid.json")
-#print(grid[0, 0].get("navigable"))
