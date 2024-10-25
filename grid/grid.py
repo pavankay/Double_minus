@@ -14,7 +14,7 @@ class Grid:
 
 
     def check_for_water(self, x, y):
-        neighbors = [(x, y-1), (x, y+1), (x-1, y), (x+1, y), (x, y)]
+        neighbors = [(x-1, y-1), (x+1, y+1), (x+1, y-1), (x-1, y+1), (x, y-1), (x, y+1), (x-1, y), (x+1, y), (x, y)]
 
         for neighbor in neighbors:
             if not (0 <= neighbor[0] < self.rows and 0 <= neighbor[1] < self.cols):
@@ -22,7 +22,6 @@ class Grid:
 
             if not self.is_navigable(*neighbor):
                 return False
-
         return True
 
     def find_random_location(self):
@@ -71,8 +70,8 @@ class Grid:
     __repr__ = __str__
 
     def save(self, filename):
-        with open(filename, "w") as f:
-            json.dump(self.save_json(), f, indent=4)
+        with open(filename, "w") as file:
+            json.dump(self.save_json(), file)
 
     def save_json(self):
         return {

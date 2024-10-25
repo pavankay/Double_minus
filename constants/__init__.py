@@ -1,14 +1,11 @@
-import os
-
-
 LAND_PROBABILITY = 0.425
 SMOOTHING_ITERATIONS = 8
 # Grid
 ROWS = 150
 COLS = 150
 # Pygame
-WIDTH = 750
-HEIGHT = 750
+WIDTH = 1050
+HEIGHT = 1050
 DATAPATH = "data/grid.json"
 # Boat
 BOAT_STARTING_POS = 0, 0

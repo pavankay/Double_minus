@@ -9,7 +9,8 @@ class GreedyNavigate:
         self.visited = set()  # Keep track of visited positions
         self.path_stack = []   # Stack to track the backtracking path
 
-    def calculate_distance(self, pos1, pos2):
+    @staticmethod
+    def calculate_distance(pos1, pos2):
         """Calculate Euclidean distance between two positions."""
         dx = pos2[0] - pos1[0]
         dy = pos2[1] - pos1[1]
