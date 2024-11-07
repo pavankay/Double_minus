@@ -4,12 +4,12 @@ from grid.grid import Grid
 from nav.boat import Boat
 from nav.navigate import GreedyNavigate
 import constants
+from display_main.colors import *
+from display_main.text import *
+from display_main.gui import *
 
-pygame.init()
+clock = pygame.time.Clock()
 
-# Screen settings
-width, height = constants.WIDTH, constants.HEIGHT
-sidebar_width = 200
 screen = pygame.display.set_mode((width + sidebar_width, height))
 pygame.display.set_caption("Navigation Demo")
 
@@ -43,41 +43,8 @@ target_pos = list(constants.BOAT_TARGET_POS)
 # Input state
 boat_input_active = False
 target_input_active = False
-boat_input_text = f"{boat_pos[0]}, {boat_pos[1]}"
-target_input_text = f"{target_pos[0]}, {target_pos[1]}"
-
-
-def generate_new_grid():
-    """Generate a new grid and save it"""
-    global grid_map, boat, navigator, navigating
-
-    # Create new grid instance using your existing Grid class
-    grid_map = Grid()
-
-    # Save to grid.json using your existing save method
-    grid_map.save(constants.DATAPATH)
-
-    # Reinitialize boat and navigator with new grid
-    boat = Boat(grid_map)
-    navigator = GreedyNavigate(boat)
-
-    # Reset positions to valid water locations
-    new_boat_pos = grid_map.find_random_location()
-    new_target_pos = grid_map.find_random_location()
-
-    # Update all positions
-    global boat_pos, target_pos, boat_input_text, target_input_text
-    boat_pos = list(new_boat_pos)
-    target_pos = list(new_target_pos)
-    boat.x, boat.y = boat_pos[0], boat_pos[1]
-    constants.BOAT_TARGET_POS = tuple(target_pos)
-
-    # Update input text displays
-    boat_input_text = f"{boat_pos[0]}, {boat_pos[1]}"
-    target_input_text = f"{target_pos[0]}, {target_pos[1]}"
-
-    # Stop navigation when generating new map
-    navigating = False
+boat_input_text = f"{boat_pos[0]},{boat_pos[1]}"
+target_input_text = f"{target_pos[0]},{target_pos[1]}"
 
 
 def draw_text(text, x, y, color=WHITE, custom_font=None):
@@ -127,19 +94,13 @@ def update_coordinates(input_text, is_boat=True):
             x, y = coords
             if 0 <= x < grid_map.cols and 0 <= y < grid_map.rows:
                 if is_boat:
-                    global boat_pos
                     boat_pos = [x, y]
                     boat.x, boat.y = x, y  # Update boat position
                 else:
-                    global target_pos
                     target_pos = [x, y]
-                    constants.BOAT_TARGET_POS = tuple(target_pos)
-                    boat.update_xy()
                 return True
     except ValueError:
-        target_pos = [0, 0]
-        constants.BOAT_TARGET_POS = tuple(target_pos)
-        boat.update_xy()
+        pass
     return False
 
 
@@ -190,19 +151,14 @@ def draw_sidebar():
     draw_input_box(boat_input_text, boat_input_rect, boat_input_active, "Boat Position (x,y)")
     draw_input_box(target_input_text, target_input_rect, target_input_active, "Target Position (x,y)")
 
-    # Start/Stop button and Generate Map button (only shown on navigation page)
+    # Start/Stop button (only shown on navigation page)
     start_stop_rect = None
-    generate_map_rect = None
     if current_page == 2:
         start_stop_rect = pygame.Rect(width + 20, 260, sidebar_width - 40, 40)
         text = "Stop" if navigating else "Start"
         draw_input_box(text, start_stop_rect, False)
 
-        # Add Generate Map button
-        generate_map_rect = pygame.Rect(width + 20, 320, sidebar_width - 40, 40)
-        draw_input_box("Generate Map", generate_map_rect, False)
-
-    return menu_rect, boat_input_rect, target_input_rect, start_stop_rect, generate_map_rect
+    return menu_rect, boat_input_rect, target_input_rect, start_stop_rect
 
 
 def draw_page():
@@ -229,8 +185,8 @@ while True:
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse_pos = pygame.mouse.get_pos()
-            button_rect = draw_page()
-            menu_rect, boat_input_rect, target_input_rect, start_stop_rect, generate_map_rect = draw_sidebar()
+            button_rect = draw_page(screen)
+            menu_rect, boat_input_rect, target_input_rect, start_stop_rect, generate_map_rect = draw_sidebar(screen)
 
             # Handle navigation between pages
             if button_rect.collidepoint(mouse_pos):
@@ -277,7 +233,7 @@ while True:
                 # Live update
                 update_coordinates(target_input_text, False)
 
-    draw_page()
-    draw_sidebar()
+    draw_page(screen)
+    draw_sidebar(screen)
     pygame.display.flip()
     clock.tick(30)

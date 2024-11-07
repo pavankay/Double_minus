@@ -1,11 +1,14 @@
-from grid.grid_cells import GridCells
-from grid.grid import Grid
 import constants
 
 class Boat:
-    def __init__(self, grid_, xy = constants.BOAT_STARTING_POS):
+    def __init__(self, grid_, xy=None):
+        if xy is None:
+            xy = constants.BOAT_TARGET_POS
         self.x, self.y = xy
         self.grid = grid_
+
+    def update_xy(self):
+        self.x, self.y = constants.BOAT_STARTING_POS
 
     def get_availability(self):
         available_moves = set()
@@ -44,7 +47,7 @@ class Boat:
 
 
 #usage
-grid = Grid.load(constants.DATAPATH)
-boat = Boat(grid)
-print(boat.get_neighbors())
+# grid = Grid.load(constants.DATAPATH)
+# boat = Boat(grid)
+# print(boat.get_neighbors())
 
