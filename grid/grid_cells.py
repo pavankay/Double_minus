@@ -12,16 +12,13 @@ class GridCells:
         for key in self.REQUIRED:
             if key not in kwds:
                 raise ValueError(f"Missing required key: {key}")
-        self.navigable = dict["navigable"]
+        self.navigable = self.dict["navigable"]
 
     def __bool__(self):
         return self.dict["navigable"]
 
     def set(self, key, value):
         self.dict[key] = value
-
-    def get_navigable(self):
-        pass
 
     def get(self, key):
         return self.dict[key]
@@ -56,16 +53,13 @@ class GridCells:
                 for j in range(cols):
                     land_neighbors = count_land_neighbors(i, j)
                     if grid[i][j]:
-                        new_grid[i][j] = land_neighbors >= 4  # Stay land if enough land neighbors
+                        new_grid[i][j] = land_neighbors >= 4
                     else:
-                        new_grid[i][j] = land_neighbors >= 5  # Become land if many land neighbors
+                        new_grid[i][j] = land_neighbors >= 5
             grid = new_grid
         return grid
 
     @classmethod
     def default(cls, row, col, landmass_map):
-        return cls(navigable=not landmass_map[col][row], default=True)
-
-# Usage example (to be placed in the Grid class or where the grid is initialized):
-# landmass_map = GridCells.generate_landmass_map(40, 40)
-# self.grid = [[GridCells.default(i, j, landmass_map) for j in range(cols)] for i in range(rows)]
+        # Now landmass_map is the full 2D array, so we access it with row and col
+        return cls(navigable=not landmass_map[row][col], default=True)

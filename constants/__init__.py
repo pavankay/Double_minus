@@ -15,3 +15,5 @@ RANDOMIZE_TARGET_POS = True
 REPLACE_DATA = True
 PYGAME_TITLE = "FLL Double Minus innovation project"
 
+SHORE_PENALTY = 10
+CELL_SIZE = WIDTH // COLS
