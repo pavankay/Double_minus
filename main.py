@@ -239,7 +239,7 @@ def reset_simulation():
 
 # === SETUP ===
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Naval Navigation")
+pygame.display.set_caption("Double Minus Demo")
 clock = pygame.time.Clock()
 font = pygame.font.Font(None, 36)
 
