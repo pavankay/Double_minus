@@ -8,9 +8,9 @@ pygame.init()
 
 # === CONSTANTS ===
 GRID_SIZE = 100
-WIDTH = 1200
-HEIGHT = 1000
-CELL_SIZE = min(WIDTH, HEIGHT) // GRID_SIZE
+WIDTH = 900   # Reduced from 1200
+HEIGHT = 900  # Reduced from 1000
+CELL_SIZE = min(WIDTH, HEIGHT) // GRID_SIZE  # This will now be 8 pixels
 
 # Colors
 WATER = (14, 135, 204)
